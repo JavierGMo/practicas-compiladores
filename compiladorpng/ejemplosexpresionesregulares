@@ -1,0 +1,26 @@
+((a+b*)*)a
+
+pila = ab
+
+pilaAux = 
+
+pilafinal = ab+.**a
+
+(ab)*
+
+pila = ab
+
+pilaAux = *
+
+pilafinal = ab.*
+
+a*|b+
+ab
+a.b
+a*b+
+a*.b+
+ab
+
+->e-a->e->e-b->ef
+
+
