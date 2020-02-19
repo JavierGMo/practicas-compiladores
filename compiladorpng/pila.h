@@ -38,7 +38,7 @@ void imprimirPila(Nodo *pila){
 	Nodo *aux = pila;
 	while(aux){
 		//printf("caracter: %c, dir: %p\n", aux->data, aux->sig);
-        printf("Valor: %c\n", aux->data);
+        printf("\nValor: %c\n", aux->data);
 		aux = aux->sig;
 	}
 }
