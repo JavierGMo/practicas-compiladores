@@ -1,5 +1,6 @@
 typedef struct nodo{
 	char data;
+	//AFN *afnchido;
 	struct Nodo *sig;
 }Nodo;
 
@@ -54,40 +55,11 @@ char top(Nodo *pila){
 int isEmpty(Nodo *pila){
     return pila == NULL;
 }
-/*Nodo *eliminarElemento(Nodo *pila){
+void borrarPila(Nodo *pila){
 	Nodo *aux;
-	if(pila == NULL){
-		printf("La pila esta vacia...");
-	}else{
+	while(pila){
 		aux = pila;
-		if(aux->sig!=NULL){
-			aux->ant = aux;
-			while (aux->sig != NULL){
-				aux = aux->sig;
-			}
-			free(aux);
-			aux->ant = NULL;
-		}else{
-			pila = NULL;
-		}
+		pila = pila->sig;
+		free(aux);
 	}
-	return pila;
-}*/
-/*Nodo *eliminarElementoFinal(Nodo *pila){
-	Nodo *aux;
-	if(pila == NULL){
-		printf("La pila esta vacia...");
-	}else{
-		aux = pila;
-		if(aux->sig!=NULL){
-			while ((aux->sig)->sig != NULL){
-				aux = aux->sig;
-			}
-			free(aux->sig);
-			aux->sig = NULL;
-		}else{
-			pila = NULL;
-		}
-	}
-	return pila;
-}*/
+}

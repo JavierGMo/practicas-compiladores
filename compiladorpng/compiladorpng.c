@@ -2,46 +2,14 @@
 #include <stdlib.h>
 #include "pila.h"
 #include "InfPost.h"
-/*
-En proceso y revision de como se va implementar las plantillas de Thompson
-typedef struct e{
-	char *inicio;
-	char *fin;
-	//epsilon
-	char *transicion;
-	struct AF *sig;
 
-}Epsilon;
-typedef struct base{
-	char *inicio;
-	char *fin;
-	char *transicion;
-}Base;
-typedef struct pipe{
-	char *inicio;
-	char *fin;
-	struct Base *base;
-	struct Epsilon *inicioRamasArriba;
-	struct Epsilon *inicioRamasAbajo;
-	struct Epsilon *finRamasArriba;
-	struct Epsilon *finRamasAbajo;
-}Pipe;
-//Modificar la cerradura estrella xd
-typedef struct estrella{
-	char *inicio;
-	char *fin;
-	struct Base *base;
-	struct Epsilon *inicioRamasArriba;
-	struct Epsilon *inicioRamasAbajo;
-	struct Epsilon *finRamasArriba;
-	struct Epsilon *finRamasAbajo;
-}Estrella;*/
 int main(int argc, char *argv[])
 {
 	//La expresion se pasa por consola ejemplo: "(a+v)*asd"
 	char *pal = argv[1], c;
 	Nodo *pila = iniciarNodo(pila);
 	Nodo *pilaAuxiliar = iniciarNodo(pilaAuxiliar);
+	//Nodo *pilaAFNs = iniciarNodo(pilaAFNs);
 	while (c=*pal++){
 		//printf("car: %c c: %c d:%d \n", c, *pal, *pal==NULL);
 		//evaluar la expresion( si tiene o no parentesis
@@ -49,12 +17,19 @@ int main(int argc, char *argv[])
 			pilaAuxiliar = agregarAlInicio(pilaAuxiliar, c);
 		}else if(parentesisDerecho(c)){
 			while (!isEmpty(pilaAuxiliar)){
-				if(top(pilaAuxiliar)!='(') pila = agregarAlInicio(pila, top(pilaAuxiliar));
+				if(top(pilaAuxiliar)!='('){
+					pila = agregarAlInicio(pila, top(pilaAuxiliar));
+				}
 				pilaAuxiliar = eliminarElemento(pilaAuxiliar);
 			}
 		}else{
-			if(!operador(c)) pila = agregarAlInicio(pila, c);
-			else pilaAuxiliar = agregarAlInicio(pilaAuxiliar, c);
+			if(!operador(c)){
+				pila = agregarAlInicio(pila, c);
+				//pilaAFNs->afnchido = crearEdoUnaTransicion(pilaAFNs->afnchido, c);
+			}
+			else{
+				pilaAuxiliar = agregarAlInicio(pilaAuxiliar, c);
+			}
 		}
 		/**
 		 * revisamos si el c contiene un parentesis izquierdo porque despues de ese parentesis sigue un caracter y se agregaria un punto 
@@ -75,12 +50,23 @@ int main(int argc, char *argv[])
 
 	//Vaciar la pila auxiliar
 	while (!isEmpty(pilaAuxiliar)){
-		if(!parentesiSIzquierdo(pilaAuxiliar->data)) pila = agregarAlInicio(pila, top(pilaAuxiliar));
+		if(!parentesiSIzquierdo(pilaAuxiliar->data)){
+			pila = agregarAlInicio(pila, top(pilaAuxiliar));
+		}
 		pilaAuxiliar = eliminarElemento(pilaAuxiliar);
 	}
-	//imprimirPila(pilaAuxiliar);
+
+
+
+	printf("Top: %c", top(pila));
+
+
+
+
 	imprimirPila(pila);
-	free(pila);
-	free(pilaAuxiliar);
+	borrarPila(pila);
+	borrarPila(pilaAuxiliar);
+	/*free(pila);
+	free(pilaAuxiliar);*/
 	return 0;
 }
