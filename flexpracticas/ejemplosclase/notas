@@ -1,0 +1,7 @@
+%% inicio para definir una expresion 
+expresio_regular lo que quiera que devuelva
+
+
+compilar con gcc el resultado de: flex archivo.l
+
+gcc archivo.yy.c -l(fl|flex|f#son las banderas)

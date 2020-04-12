@@ -47,20 +47,48 @@ AFN *cerraduraPositiva(AFN *estado){
 		afnEpsionFinal->sig = null
 		afnEpsionFinal->ant = afnEpsionInicio->sig;
 	*/
-	AFN *estadoPrincipal;
-    AFN afnPrincipal = (AFN*)malloc(sizeof(AFN));
-
-
-    return estadoCerradura;
+    AFN *afnPrincipal = (AFN*)malloc(sizeof(AFN));
+	AFN *afnFinal = (AFN*)malloc(sizeof(AFN));
+	afnPrincipal->transicion = 'E';
+	afnFinal->transicion = 'E';
+	afnPrincipal->siguiente = estado;
+	estado->siguiente = afnFinal;
+	afnFinal->siguiente = NULL;
+	afnFinal->anterior = estado;
+    return afnPrincipal;
 }
+
 AFN *cerraduraEstrella(AFN *estado){
-    AFN *estadoCerradura = (AFN*)malloc(sizeof(AFN));
-    return estadoCerradura;
+    AFN *afnPrincipal = (AFN*)malloc(sizeof(AFN));
+	AFN *afnMedio = (AFN*)malloc(sizeof(AFN));
+	AFN *afnFinal = (AFN*)malloc(sizeof(AFN));
+	afnPrincipal->transicion = 'E';
+	afnMedio->transicion = 'E';
+	afnFinal->transicion = 'E';
+	afnPrincipal->siguiente = estado;
+	afnPrincipal->abajoTransi = NULL;
+	estado->siguiente = afnFinal;
+	afnFinal->siguiente = NULL;
+	afnFinal->arribaTransi = estado;
+    return afnPrincipal;
 }
+
 AFN *pipe(AFN *estadoUno, AFN *estadoDos){
-    AFN *tuberia = (AFN*)malloc(sizeof(AFN));
-    return tuberia;
+    AFN *tuberiaInicial = (AFN*)malloc(sizeof(AFN));
+	AFN *tuberiaFinalUp = (AFN*)malloc(sizeof(AFN));
+	AFN *tuberiaFinalDown = (AFN*)malloc(sizeof(AFN));
+	tuberiaInicial->transicion = 'E';
+	tuberiaInicial->arribaTransi = estadoUno;
+	tuberiaInicial->arribaTransi = estadoDos;
+	tuberiaFinalUp->transicion = 'E';
+	tuberiaFinalDown->transicion = 'E';
+	estadoUno->siguiente = tuberiaFinalUp;
+	estadoDos->siguiente = tuberiaFinalDown;
+	tuberiaFinalUp->siguiente = NULL;
+	tuberiaFinalDown->siguiente = NULL;
+    return tuberiaInicial;
 }
+
 /*fin funciones afn*/
 Nodo *agregarAFNAPila(Nodo *pila, AFN *afnd){
     //aun no se crea el afns
@@ -133,44 +161,6 @@ int hacerRecorridoAFN(Nodo *pila){
 			pilaGlobal = agregarAlInicio(pilaGlobal, auxAFNs->transicion);
 			hacerRecorridoAFN(pila->sig);
 			i = 1;
-		}else if(auxAFN->sigInicial != NULL){
-			auxAFNs = auxAFN->sigInicial;
-			pilaGlobal = iniciarNodo(pilaGlobal);
-			pilaGlobal = agregarAlInicio(pilaGlobal, auxAFNs->transicion);
-			hacerRecorridoAFN(pila->sig);
-			i = 1;
-		}else if(auxAFN->sigFinal != NULL){
-			auxAFNs = auxAFN->sigFinal;
-			pilaGlobal = iniciarNodo(pilaGlobal);
-			pilaGlobal = agregarAlInicio(pilaGlobal, auxAFNs->transicion);
-			hacerRecorridoAFN(pila->sig);
-			i = 1;
-		}else if(auxAFN->pipeRamaDownIni != NULL){
-			auxAFNs = auxAFN->pipeRamaDownIni;
-			pilaGlobal = iniciarNodo(pilaGlobal);
-			pilaGlobal = agregarAlInicio(pilaGlobal, auxAFNs->transicion);
-			hacerRecorridoAFN(pila->sig);
-			i = 1;
-		}else if(auxAFN->pipeRamaDownFin != NULL){
-			auxAFNs = auxAFN->pipeRamaDownFin;
-			pilaGlobal = iniciarNodo(pilaGlobal);
-			pilaGlobal = agregarAlInicio(pilaGlobal, auxAFNs->transicion);
-			hacerRecorridoAFN(pila->sig);
-			i = 1;
-		}else if(auxAFN->pipeRamaUpIni != NULL){
-			auxAFNs = auxAFN->pipeRamaUpIni;
-			pilaGlobal = iniciarNodo(pilaGlobal);
-			pilaGlobal = agregarAlInicio(pilaGlobal, auxAFNs->transicion);
-			hacerRecorridoAFN(pila->sig);
-			i = 1;
-		}else if(auxAFN->pipeRamaUpFin != NULL){
-			auxAFNs = auxAFN->pipeRamaUpFin;
-			pilaGlobal = iniciarNodo(pilaGlobal);
-			pilaGlobal = agregarAlInicio(pilaGlobal, auxAFNs->transicion);
-			hacerRecorridoAFN(pila->sig);
-			i = 1;
-		}else{
-			i = 0;
 		}
 	}
 	return i;
